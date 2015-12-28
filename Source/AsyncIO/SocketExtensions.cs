@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AsyncIO
 {
@@ -35,10 +36,8 @@ namespace AsyncIO
                 throw new ArgumentOutOfRangeException("port");
             }
 
-            var ipAddress = Dns.GetHostAddresses(host).FirstOrDefault(ip=>                 
-                ip.AddressFamily == socket.AddressFamily || 
-                (socket.AddressFamily == AddressFamily.InterNetworkV6 && socket.DualMode && ip.AddressFamily == AddressFamily.InterNetwork));
-
+            var ipAddress = GetIp(socket, host).GetAwaiter().GetResult();
+           
             if (ipAddress != null)
             {
                 socket.Connect(ipAddress, port);
@@ -47,6 +46,16 @@ namespace AsyncIO
             {
                 throw new ArgumentException("invalid host", "host");
             }            
+        }
+
+        private static async Task<IPAddress> GetIp(AsyncSocket socket, string host)
+        {
+            var ipAddressAs = await Dns.GetHostAddressesAsync(host);
+            var ipAddress = ipAddressAs.FirstOrDefault(ip =>
+                ip.AddressFamily == socket.AddressFamily ||
+                (socket.AddressFamily == AddressFamily.InterNetworkV6 && socket.DualMode && ip.AddressFamily == AddressFamily.InterNetwork));
+
+            return ipAddress;
         }
 
         public static void Send(this AsyncSocket socket, byte[] buffer)

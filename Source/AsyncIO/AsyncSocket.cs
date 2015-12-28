@@ -11,11 +11,11 @@ namespace AsyncIO
     public enum OperationType
     {
         Send, Receive, Accept, Connect, Disconnect, Signal
-    }   
-    
+    }
+
     public abstract class AsyncSocket : IDisposable
     {
-        private SocketOptionName IPv6Only = (SocketOptionName) 27;
+        private SocketOptionName IPv6Only = (SocketOptionName)27;
 
         internal AsyncSocket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType)
         {
@@ -26,14 +26,7 @@ namespace AsyncIO
 
         public static AsyncSocket Create(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType)
         {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT || ForceDotNet.Forced)
-            {
-                return new NativeSocket(addressFamily, socketType, protocolType);
-            }
-            else
-            {
-                return new Windows.Socket(addressFamily, socketType, protocolType);                    
-            }            
+            return new NativeSocket(addressFamily, socketType, protocolType);
         }
 
         public static AsyncSocket CreateIPv4Tcp()
@@ -75,7 +68,7 @@ namespace AsyncIO
                 return (int)this.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ExclusiveAddressUse) != 0;
             }
             set
-            {                
+            {
                 this.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ExclusiveAddressUse, value ? 1 : 0);
             }
         }
@@ -130,7 +123,7 @@ namespace AsyncIO
             get
             {
                 return (LingerOption)this.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger);
-            }            
+            }
             set
             {
                 this.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, (object)value);
@@ -173,7 +166,7 @@ namespace AsyncIO
                 else
                 {
                     if (AddressFamily != AddressFamily.InterNetworkV6)
-                        throw new NotSupportedException("invalid version");            
+                        throw new NotSupportedException("invalid version");
                     this.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.MulticastLoopback, value ? 1 : 0);
                 }
             }
@@ -183,12 +176,12 @@ namespace AsyncIO
         {
             get
             {
-                if (AddressFamily  == AddressFamily.InterNetwork)
+                if (AddressFamily == AddressFamily.InterNetwork)
                     return (short)(int)this.GetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress);
                 if (AddressFamily == AddressFamily.InterNetworkV6)
                     return (short)(int)this.GetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.ReuseAddress);
                 else
-                    throw new NotSupportedException("invalid version");    
+                    throw new NotSupportedException("invalid version");
             }
             set
             {
@@ -201,7 +194,7 @@ namespace AsyncIO
                 else
                 {
                     if (AddressFamily != AddressFamily.InterNetworkV6)
-                        throw new NotSupportedException("invalid version");    
+                        throw new NotSupportedException("invalid version");
                     this.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.ReuseAddress, (int)value);
                 }
             }
@@ -219,7 +212,7 @@ namespace AsyncIO
         public abstract int IOControl(IOControlCode ioControlCode, byte[] optionInValue, byte[] optionOutValue);
 
         public abstract void Dispose();
-         
+
         public abstract void Bind(IPEndPoint localEndPoint);
 
         public abstract void Listen(int backlog);

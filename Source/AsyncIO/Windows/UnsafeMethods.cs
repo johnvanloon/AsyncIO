@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Net.Sockets;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
@@ -119,15 +119,15 @@ namespace AsyncIO.Windows
 
         [DllImport("Ws2_32.dll", SetLastError = true)]
         public static extern int WSAIoctl(
-            /* Socket, Mode */
+            /* Socket, Mode #1#
             IntPtr s, int dwIoControlCode,
-            /* Optional Or IntPtr.Zero, 0 */
+            /* Optional Or IntPtr.Zero, 0 #1#
             ref Guid lpvInBuffer, int cbInBuffer,
-            /* Optional Or IntPtr.Zero, 0 */
+            /* Optional Or IntPtr.Zero, 0 #1#
             ref IntPtr lpvOutBuffer, int cbOutBuffer,
-            /* reference to receive Size */
+            /* reference to receive Size #1#
             ref int lpcbBytesReturned,
-            /* IntPtr.Zero, IntPtr.Zero */
+            /* IntPtr.Zero, IntPtr.Zero #1#
             IntPtr lpOverlapped, IntPtr lpCompletionRoutine);
 
         [DllImport("ws2_32.dll", EntryPoint = "WSAIoctl", SetLastError = true)]
@@ -199,4 +199,4 @@ namespace AsyncIO.Windows
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool CancelIoEx(IntPtr hFile, IntPtr overlapped);
     }
-}
+}*/
